@@ -77,3 +77,10 @@ body {
 .d-none {
   display: none;
 }
+
+.is-invalid {
+  border: 1px solid firebrick;
+}
+.is-valid {
+  border: 1px solid green;
+}
