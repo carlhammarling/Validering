@@ -1,28 +1,12 @@
-/*
-
-
-
-
-Om valideringen går igenom så ska du istället logga ut ett success
- meddelande i consolen och skapa ett user objekt som har följande fält: 
- firstName, lastName, email, password. Detta objekt ska också skrivas ut i consolen
-
-
- Alla fälten ska valideras så att korrekt information skriv in. ( email måste vara en emailadress, 
- och ett namn ska inte få vara kortare än 
-2 bokstäver samt inte innehålla några siffror)
- */
-
-
 
 //hela formuläret
 const form = document.querySelector('#validationForm');
 
-/*Om något av fälten inte är ifyllda eller checkrutan inte är iklickad så ska du logga ett f
-elmeddelande i consolen där du skriver att någonting har gått fel.*/
+/*Tar in värdet från tidigare funktion*/
 const error = (input) => {
     input.classList.remove('is-valid')
     input.classList.add('is-invalid')
+    console.log('You have to put in a valid input in ' + input.id);
     return false; //för att sätta false i arraylistan
 }
 
@@ -72,12 +56,12 @@ const valPass = (id) => {
 
 //checkbox
 const valCheckbox = (id) => {
-    const checkbox = document.querySelector(id)
-    if(!checkbox.checked) {
-        return error(checkbox)
+    const input = document.querySelector(id)
+    if(!input.checked) {
+        return error(input)
     }
     else {
-        return success(checkbox)
+        return success(input)
     }
 }
 
@@ -93,39 +77,42 @@ const compPass = (pass1, pass2) => {
     }
 }
 
-//array som loggar true/false
+//Tom array som loggar true/false
 const errors = []
 
-//users
-const user = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-}
+//User - tom array som fylls på när det händer nåt
+const user = {}
 
 //när man klickar på submit
 form.addEventListener('submit', e => {
-    //Förhindra sidan att laddas om när formuläret ska valideras.
+//Förhindra sidan att laddas om när formuläret ska valideras.
      e.preventDefault();
-/*Hittills är det bara här jag kallar på funktionen och ger den ett värde*/
+/*Det bara här jag kallar på funktionen och ger den ett värde
+Hela kedjan bygger typ på att du får ut ett true/false*/
 
      errors[0] = valText('#firstName')
      errors[1] = valText('#lastName')
      errors[2] = valEmail('#email')
      errors[3] = valPass('#password')
      errors[4] = valPass('#repeatPassword')
-     errors[6] = compPass(document.querySelector('#password').value, document.querySelector('#repeatPassword').value)
-     errors[5] = valCheckbox('#terms')
+     errors[5] = compPass(document.querySelector('#password').value, document.querySelector('#repeatPassword').value)
+     errors[6] = valCheckbox('#terms')
+
 
      if(errors.includes(false)) {
         console.log('Någonting gick fel')
+        errorMessage.classList.remove('d-none')
+        
      }
      else {
+        //lägger in all info i objectet.
         user.firstName = document.querySelector('#firstName').value
         user.lastName = document.querySelector('#lastName').value
         user.email = document.querySelector('#email').value
         user.password = setPassword
+        
+        //addar tillbaka d-noneklassen så att felmeddelandet försvinner
+        errorMessage.classList.add('d-none')
 
         console.log('Bra jobbat, du lyckades skapa e profil!')
         console.log(user);
