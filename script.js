@@ -14,6 +14,24 @@ const error = (input) => {
     console.log('You have to put in a valid input in ' + string2.toLowerCase() + ".");
     return false; //för att sätta false i arraylistan
 }
+const passError = (pass1, pass2) => {
+//För att få ut det som står i labeln i ren text i consolen.
+    
+    pass1.classList.remove('is-valid')
+    pass2.classList.remove('is-valid')
+    pass1.classList.add('is-invalid')
+    pass2.classList.add('is-invalid')
+    return false;
+}
+const passSuccess = (pass1, pass2) => {
+//För att få ut det som står i labeln i ren text i consolen.
+    
+    pass1.classList.remove('is-invalid')
+    pass2.classList.remove('is-invalid')
+    pass1.classList.add('is-valid')
+    pass2.classList.add('is-valid')
+    return true;
+}
 const errorCheck = (input) => {
     input.classList.remove('is-valid')
     input.classList.add('is-invalid')
@@ -61,24 +79,6 @@ const valEmail = (id) => {
     }
 }
 
-//lösenorden måste matcha varandra samt ha en längd på minst 6
-const valPass = (id) => {
-    let input = document.querySelector(id)
-
-    //förhindrar space i lösenord
-    let regEx = /^\S+$/
-
-    if(input.value.trim().length < 6) {
-        return error(input);
-    }
-    else if (!regEx.test(input.value)) {
-        return error(input);
-    }
-    else {
-        return success(input);
-    }
-}
-
 //checkbox
 const valCheckbox = (id) => {
     const input = document.querySelector(id)
@@ -92,13 +92,30 @@ const valCheckbox = (id) => {
 
 let setPassword = null;
 
-const compPass = (pass1, pass2) => {
-    if ((pass1 === pass2) && valPass('#password') == true) {
-        setPassword = document.querySelector('#password').value;
-        return true;
+const compPass = (id1, id2) => {
+    let pass1 = document.querySelector(id1);
+    let pass2 = document.querySelector(id2);
+    //förhindrar space i lösenord
+    let regEx = /^\S+$/
+
+    if (pass1.value !== pass2.value) {    
+       console.log('Your passwords doesn\'t match.')
+        return passError(pass1, pass2);
     } 
+    //för kort
+    else if(pass1.value.trim().length < 6) {
+        console.log('Your password is to short.')
+        return passError(pass1, pass2);
+    }
+    //space
+    else if(!regEx.test(pass1.value)) {
+        console.log('Your password is not allowed to use space.')
+        return passError(pass1, pass2);
+    }
     else {
-        return false;
+        //Om båda matchar sätter den password
+        setPassword = pass1.value;
+        return passSuccess(pass1, pass2);
     }
 }
 
@@ -118,14 +135,13 @@ Hela kedjan bygger typ på att du får ut ett true/false*/
      errors[0] = valText('#firstName')
      errors[1] = valText('#lastName')
      errors[2] = valEmail('#email')
-     errors[3] = valPass('#password')
-     errors[4] = valPass('#repeatPassword')
-     errors[5] = compPass(document.querySelector('#password').value, document.querySelector('#repeatPassword').value)
-     errors[6] = valCheckbox('#terms')
+     errors[3] = compPass('#password', '#repeatPassword')
+     errors[4] = valCheckbox('#terms')
 
 
      if(errors.includes(false)) {
-        console.log('Någonting gick fel')
+        console.log('Something went wrong')
+        console.log(errors)
         errorMessage.classList.remove('d-none')
         
      }
@@ -139,12 +155,10 @@ Hela kedjan bygger typ på att du får ut ett true/false*/
         //addar tillbaka d-noneklassen så att felmeddelandet försvinner
         errorMessage.classList.add('d-none')
 
-        console.log('Bra jobbat, du lyckades skapa e profil!')
+        console.log('Well done! You managed to register a profile!')
         console.log(user);
      }
      
 })
-
-console.log(form);
 
 
