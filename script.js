@@ -70,9 +70,7 @@ const valEmail = (id) => {
     let regEx = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     
     let input = document.querySelector(id)
-    if(input.value.trim().length < 2) {
-        return error(input);
-    } else if (!regEx.test(input.value)) {
+    if (!regEx.test(input.value)) {
         return error(input);
     }
 
@@ -118,7 +116,7 @@ const valPass = (id1, id2) => {
     }
     //space
     else if(!regEx.test(pass1.value)) {
-        console.log('Your password is not allowed to use space.')
+        console.log('You are not allowed to use space in your password.')
         return passError(pass1, pass2);
     }
     else {
@@ -146,12 +144,12 @@ form.addEventListener('submit', e => {
      errors[3] = valPass('#password', '#repeatPassword')
      errors[4] = valCheckbox('#terms')
 
-    //om errors error innehåller något false
+    //om errors array innehåller något false
      if(errors.includes(false)) {
         console.log('Something went wrong.')
         errorMessage.classList.remove('d-none')      
      }
-     //om errors bara innehåller true, skapar object
+     //om errors array bara innehåller true, skapar object
      else {
         let fName = document.querySelector('#firstName').value
         let lName = document.querySelector('#lastName').value
