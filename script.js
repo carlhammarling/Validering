@@ -145,3 +145,6 @@ Hela kedjan bygger typ på att du får ut ett true/false*/
      
 })
 
+console.log(form);
+
+
