@@ -4,9 +4,20 @@ const form = document.querySelector('#validationForm');
 
 /*Tar in värdet från tidigare funktion*/
 const error = (input) => {
+//För att få ut det som står i labeln i ren text i consolen.
+    const label = document.querySelector(`#${input.id}-label`)
+    let string = label.textContent;
+    let string2 = string.slice(0, -1);
+
     input.classList.remove('is-valid')
     input.classList.add('is-invalid')
-    console.log('You have to put in a valid input in ' + input.id);
+    console.log('You have to put in a valid input in ' + string2.toLowerCase() + ".");
+    return false; //för att sätta false i arraylistan
+}
+const errorCheck = (input) => {
+    input.classList.remove('is-valid')
+    input.classList.add('is-invalid')
+    console.log('You have to check the checkbox.');
     return false; //för att sätta false i arraylistan
 }
 
@@ -16,13 +27,17 @@ const success = (input) => {
     return true; //för att sätta true i arraylistan
 }
 
-//Validera alla fälten så att alla fält måste ha ett innehåll och checkrutan måste klickas i
 
 //id = det jag skriver i när jag kallar funktionen längre ner, här #firstName
 const valText = (id) => {
     let input = document.querySelector(id)
-    //input.value är det jag får ut. input är liksom hela raden (kod)
+    //RegEx som bara tillåter bokstäver,space och - , om man tex har dubbelnamn
+    let regEx = /^[a-zA-Z\s\-]*$/;
+
     if(input.value.trim().length < 2) {
+        return error(input);
+    }
+    else if(!regEx.test(input.value)) {
         return error(input);
     }
     else {
@@ -37,7 +52,10 @@ const valEmail = (id) => {
     let input = document.querySelector(id)
     if(input.value.trim().length < 2) {
         return error(input);
-    } 
+    } else if (!regEx.test(input.value)) {
+        return error(input);
+    }
+
     else {
         return success(input);
     }
@@ -46,7 +64,14 @@ const valEmail = (id) => {
 //lösenorden måste matcha varandra samt ha en längd på minst 6
 const valPass = (id) => {
     let input = document.querySelector(id)
+
+    //förhindrar space i lösenord
+    let regEx = /^\S+$/
+
     if(input.value.trim().length < 6) {
+        return error(input);
+    }
+    else if (!regEx.test(input.value)) {
         return error(input);
     }
     else {
@@ -58,7 +83,7 @@ const valPass = (id) => {
 const valCheckbox = (id) => {
     const input = document.querySelector(id)
     if(!input.checked) {
-        return error(input)
+        return errorCheck(input)
     }
     else {
         return success(input)
