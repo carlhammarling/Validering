@@ -111,7 +111,7 @@ const valPass = (id1, id2) => {
     }
     //för kort
     else if(pass1.value.trim().length < 6) {
-        console.log('Your password is to short.')
+        console.log('Your password must contain at least 6 characters.')
         return passError(pass1, pass2);
     }
     //space
