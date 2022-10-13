@@ -138,7 +138,7 @@ const errors = []
 const users = []
 //function som skapar användare, lägger in all info i objectet i små bokstäver så att det ska bli enklare att söka bland objekt i framtiden. Utom password som får innehålla olika
 class User {
-    constructor(firstName, lastName, email, pass1) {
+    constructor(firstName, lastName, email, setPassword) {
     this.firstName = firstName.toLowerCase();
     this.lastName = lastName.toLowerCase();
     this.email = email.toLowerCase();
