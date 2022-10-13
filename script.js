@@ -73,6 +73,11 @@ const valEmail = (id) => {
     if (!regEx.test(input.value)) {
         return error(input);
     }
+    //Om emailadressen redan är registrerad
+    else if(users.some(user => user.email === document.querySelector("#email").value)) {
+        console.log("User already exists!")
+        return error(input);
+     }
 
     else {
         return success(input);
@@ -129,14 +134,23 @@ const valPass = (id1, id2) => {
 //Tom array som loggar true/false
 const errors = []
 
-//User - tom array som fylls på när användaren skapas
-const user = {}
+//array som sparar user-objects
+const users = []
+//function som skapar användare, lägger in all info i objectet i små bokstäver så att det ska bli enklare att söka bland objekt i framtiden. Utom password som får innehålla olika
+class User {
+    constructor(firstName, lastName, email, pass1) {
+    this.firstName = firstName.toLowerCase();
+    this.lastName = lastName.toLowerCase();
+    this.email = email.toLowerCase();
+    this.password = setPassword;
+    }
+}
 
 //när man klickar på submit
 form.addEventListener('submit', e => {
 //Förhindra sidan att laddas om när formuläret ska valideras.
      e.preventDefault();
-    
+
      //skickar de olika id:na till funktioner för att hämta hem true/false till errors array
      errors[0] = valText('#firstName')
      errors[1] = valText('#lastName')
@@ -149,24 +163,30 @@ form.addEventListener('submit', e => {
         console.log('Something went wrong.')
         errorMessage.classList.remove('d-none')      
      }
+
      //om errors array bara innehåller true, skapar object
      else {
-        let fName = document.querySelector('#firstName').value
-        let lName = document.querySelector('#lastName').value
+        let firstName = document.querySelector('#firstName').value
+        let lastName = document.querySelector('#lastName').value
         let email = document.querySelector('#email').value
-        //lägger in all info i objectet i små bokstäver så att det ska bli enklare att söka bland objekt i framtiden. Utom password som får innehålla olika
-        user.firstName = fName.toLowerCase()
-        user.lastName = lName.toLowerCase()
-        user.email = email.toLowerCase()
-        user.password = setPassword
         
+        //skapar ny användare via constructor
+        const user = new User(firstName, lastName, email, setPassword)
+        
+        //pushar in ny user i users-array
+        users.push(user);
         //addar tillbaka d-noneklassen så att felmeddelandet försvinner
         errorMessage.classList.add('d-none')
 
         console.log('Well done! You managed to register a profile!')
         console.log(user);
+
+       //loggar userarrays
+       console.log(users)
      }
      
 })
+
+
 
 
