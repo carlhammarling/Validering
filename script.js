@@ -51,7 +51,7 @@ const errorCheck = () => {
 const valText = (id) => {
     let input = document.querySelector(id)
     //RegEx som bara tillåter bokstäver,space och - , om man tex har dubbelnamn
-    let regEx = /^[a-zA-Z\s\-]*$/;
+    let regEx = /^[a-öA-Ö\s\-]*$/;
 
     if(input.value.trim().length < 2) {
         return error(input);
@@ -186,6 +186,8 @@ form.addEventListener('submit', e => {
      }
      
 })
+
+
 
 
 
